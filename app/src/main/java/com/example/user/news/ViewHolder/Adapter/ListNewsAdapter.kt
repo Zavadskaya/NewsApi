@@ -14,21 +14,22 @@ import com.example.user.news.view.ArticleActivity
 import com.example.user.news.viewHolder.holder.ListNewsViewHolder
 import com.squareup.picasso.Picasso
 
-class ListNewsAdapter (private val context: Context, private val articles: Headlines): RecyclerView.Adapter<ListNewsViewHolder>() {
+class ListNewsAdapter(private val context: Context, private val articles: Headlines) :
+    RecyclerView.Adapter<ListNewsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListNewsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemView = inflater.inflate(com.example.user.news.R.layout.article_news_layout, parent, false)
         return ListNewsViewHolder(itemView)
     }
+
     override fun onBindViewHolder(holder: ListNewsViewHolder, position: Int) {
         holder.article_title.text = articles.articles[position].title.toString()
-    if(articles.articles[position].urlToImage!=null)
+        if (articles.articles[position].urlToImage != null)
             Picasso.get()
                 .load(articles.articles[position].urlToImage)
                 .into(holder.imageView)
-        else{
+        else {
             holder.imageView.setImageResource(R.drawable.news)
-
         }
 
         holder.article_data.text = GlobalUrl.DateToTimeFormat(articles.articles[position].publishedAt!!.toString())
@@ -49,13 +50,15 @@ class ListNewsAdapter (private val context: Context, private val articles: Headl
                 }
             }
         })
-
     }
-    override fun getItemCount():Int
-    {return articles.articles.size}
-    override fun getItemId(position: Int): Long =
-        articles!!.articles[position].url!!.hashCode().toLong()
 
+    override fun getItemCount() = articles.articles.size
+
+    override fun getItemId(position: Int): Long {
+        return articles.articles[position].url?.let {
+            it.hashCode().toLong()
+        } ?: position.toLong()
+    }
 
 }
 

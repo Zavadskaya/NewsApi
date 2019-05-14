@@ -10,8 +10,6 @@ import android.widget.Toast
 import com.example.user.news.R
 import com.example.user.news.`interface`.NewsService
 import com.example.user.news.model.Sources
-import com.example.user.news.net.GlobalUrl
-import com.example.user.news.net.RetrofitClient
 import com.example.user.news.viewHolder.adapter.ListSourceAdapter
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_source.*
@@ -22,27 +20,24 @@ import retrofit2.Response
 class SourceActivity : AppCompatActivity() {
 
     lateinit var layoutManager: LinearLayoutManager
-    lateinit var service: NewsService
     lateinit var adapter: ListSourceAdapter
-    lateinit var dialog:SpotsDialog
-    lateinit var bottomNavigationView:BottomNavigationView
+    lateinit var dialog: SpotsDialog
+    lateinit var bottomNavigationView: BottomNavigationView
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_source)
 
-        service = RetrofitClient.newsService
-
         recycler_view_source_news.setHasFixedSize(true)
-        layoutManager =  LinearLayoutManager(baseContext)
+        layoutManager = LinearLayoutManager(baseContext)
         recycler_view_source_news.layoutManager = layoutManager
 
         bottomNavigationView = this.findViewById(R.id.navigation)
         bottomNavigationView.selectedItemId = R.id.menu_item1
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             intent = Intent(this, MainActivity::class.java)
-            val intent2 = Intent(this,SearchActivity::class.java)
+            val intent2 = Intent(this, SearchActivity::class.java)
 
             when (item.itemId) {
                 R.id.menu_item1 ->
@@ -59,28 +54,26 @@ class SourceActivity : AppCompatActivity() {
 //        dialog = SpotsDialog(baseContext)
 //        dialog.setTitle("Loading...")
 //        dialog.setCancelable(false)
-        loadWebSiteSource(" "," ")
+        loadWebSiteSource(" ", " ")
 //        dialog.dismiss()
 
     }
 
-    private fun loadWebSiteSource(country:String,category:String) {
-        service.sources(country, category, GlobalUrl.API_KEY).enqueue(object : retrofit2.Callback<Sources> {
-            override fun onFailure(call: Call<Sources>, t: Throwable) {
-                Toast.makeText(baseContext, "Error", Toast.LENGTH_SHORT).show()
-                Log.e("error",call.toString())
-            }
+    private fun loadWebSiteSource(country: String, category: String) {
+        NewsService.instance.sources(sources = country, category = category)
+            .enqueue(object : retrofit2.Callback<Sources> {
+                override fun onFailure(call: Call<Sources>, t: Throwable) {
+                    Toast.makeText(baseContext, "Error", Toast.LENGTH_SHORT).show()
+                    Log.e("error", call.toString())
+                }
 
-            override fun onResponse(call: Call<Sources>, response: Response<Sources>) {
-                adapter = ListSourceAdapter(baseContext!!, response.body()!!)
-                recycler_view_source_news.adapter = adapter
-                adapter.notifyDataSetChanged()
-                Log.e("Response",response.toString())
-            }
-
-
-        })
-
+                override fun onResponse(call: Call<Sources>, response: Response<Sources>) {
+                    adapter = ListSourceAdapter(baseContext!!, response.body()!!)
+                    recycler_view_source_news.adapter = adapter
+                    adapter.notifyDataSetChanged()
+                    Log.e("Response", response.toString())
+                }
+            })
     }
 
 }

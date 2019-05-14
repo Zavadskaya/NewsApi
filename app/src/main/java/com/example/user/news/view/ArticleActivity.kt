@@ -20,30 +20,30 @@ class ArticleActivity : AppCompatActivity() {
         val description: TextView = findViewById(R.id.desc)
         val author: TextView = findViewById(R.id.author)
         val date: TextView = findViewById(R.id.publishedAt)
-        val title:TextView = findViewById(R.id.title)
+        val title: TextView = findViewById(R.id.title)
         val image: ImageView = findViewById(R.id.img)
-        val webView:TextView = findViewById(R.id.webView)
+        val webView: TextView = findViewById(R.id.webView)
 
         if (intent != null) {
-            if (!intent.getStringExtra("description").isEmpty()
-                    ||!intent.getStringExtra("title").isEmpty()
-                    ||!intent.getStringExtra("date").isEmpty())
-                description.text = intent.getStringExtra("description")
-                author.text = intent.getStringExtra("author")
-                date.text = GlobalUrl.DateToTimeFormat(intent.getStringExtra("date"))
-                title.text = intent.getStringExtra("title")
-                Picasso.get()
-                    .load(intent.getStringExtra("image"))
-                    .into(image)
+//          getStringExtra can be NULL, then empty string
+            description.text = intent.getStringExtra("description") ?: ""
+            author.text = intent.getStringExtra("author") ?: ""
+            date.text = GlobalUrl.DateToTimeFormat(intent.getStringExtra("date")) ?: ""
+            title.text = intent.getStringExtra("title") ?: ""
 
+            val imageUrl = intent.getStringExtra("image")
+            imageUrl?.let {
+                Picasso.get().load(it).into(image)
+            }
+
+            webView.setOnClickListener {
+                intent.getStringExtra("url")?.let {
+                    val intents = Intent(this, WebViewActivity::class.java)
+                    intents.putExtra("url", it)
+                    startActivity(intents)
+                }
+            }
         }
-        webView.setOnClickListener {
-            val intents = Intent(this, WebViewActivity::class.java)
-            intents.putExtra("url", intent.getStringExtra("url"))
-            startActivity(intents)
-        }
-
-
     }
 }
 

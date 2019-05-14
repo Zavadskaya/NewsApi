@@ -10,15 +10,12 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
+import com.example.user.news.`interface`.NewsService
 import com.example.user.news.model.Headlines
-import com.example.user.news.net.GlobalUrl
-import com.example.user.news.net.RetrofitClient
 import com.example.user.news.viewHolder.adapter.ListNewsAdapter
 import kotlinx.android.synthetic.main.activity_news.*
 import retrofit2.Call
 import retrofit2.Response
-
-
 
 
 open class NewsFragment : Fragment() {
@@ -61,11 +58,11 @@ open class NewsFragment : Fragment() {
 
         //Paper.init(context)
 
-        if (arguments != null) {
-            text = arguments!!.getString(ARG_TEXT, text)
-            n = arguments!!.getInt("pos")
-
+        arguments?.let {
+            text = it.getString(ARG_TEXT, text)
+            n = it.getInt("pos")
         }
+
         val contents = text
 
         recycler_view_news.setHasFixedSize(true)
@@ -97,40 +94,39 @@ open class NewsFragment : Fragment() {
 
     }
 
-    fun loadWebSiteSource(country: String, category: String, keyword: String)
-    {
-       /* val cache: String = Paper.book().read("cache")
-        if (!cache.isEmpty() && cache != " ") {
-            val headlines: Headlines = Gson().fromJson(cache, Headlines::class.java)
+    fun loadWebSiteSource(country: String, category: String, keyword: String) {
+        /* val cache: String = Paper.book().read("cache")
+         if (!cache.isEmpty() && cache != " ") {
+             val headlines: Headlines = Gson().fromJson(cache, Headlines::class.java)
 
-            mAdapter = ListNewsAdapter(context!!, headlines)
-            mAdapter.notifyDataSetChanged()
-            recycler_view_news.adapter = mAdapter
-        } else {*/
+             mAdapter = ListNewsAdapter(context!!, headlines)
+             mAdapter.notifyDataSetChanged()
+             recycler_view_news.adapter = mAdapter
+         } else {*/
 
-            RetrofitClient.newsService.articles(country, category, GlobalUrl.API_KEY, keyword)
-                .enqueue(object : retrofit2.Callback<Headlines> {
-                    override fun onFailure(call: Call<Headlines>?, t: Throwable?) {
-                        Toast.makeText(context, "Error", Toast.LENGTH_SHORT)
-                            .show()
-                    }
+        NewsService.instance.articles(country = country, category = category, keyword = keyword)
+            .enqueue(object : retrofit2.Callback<Headlines> {
+                override fun onFailure(call: Call<Headlines>?, t: Throwable?) {
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT)
+                        .show()
+                }
 
-                    override fun onResponse(call: Call<Headlines>?, response: Response<Headlines>?) {
-                        mAdapter = response!!.body()?.let {
-                            ListNewsAdapter(context!!, it)
-                        }!!
-                        recycler_view_news.adapter = mAdapter
-                        mAdapter.notifyDataSetChanged()
-                        //Paper.book().write("cache", Gson().toJson(response.body()))
+                override fun onResponse(call: Call<Headlines>?, response: Response<Headlines>?) {
+                    mAdapter = response!!.body()?.let {
+                        ListNewsAdapter(context!!, it)
+                    }!!
+                    recycler_view_news.adapter = mAdapter
+                    mAdapter.notifyDataSetChanged()
+                    //Paper.book().write("cache", Gson().toJson(response.body()))
 
-                    }
-                })
-        }
-
-        /* }
-       }, 4000)
-                }*/
-
-
+                }
+            })
     }
+
+    /* }
+   }, 4000)
+            }*/
+
+
+}
 

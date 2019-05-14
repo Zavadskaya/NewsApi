@@ -4,9 +4,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
+import com.example.user.news.`interface`.NewsService
 import com.example.user.news.model.Headlines
-import com.example.user.news.net.GlobalUrl
-import com.example.user.news.net.RetrofitClient
 import com.example.user.news.viewHolder.adapter.ListNewsAdapter
 import kotlinx.android.synthetic.main.activity_everything.*
 import retrofit2.Call
@@ -16,7 +15,7 @@ open class EverythingActivity : AppCompatActivity() {
 
     lateinit var layoutManager: LinearLayoutManager
     lateinit var mAdapter: ListNewsAdapter
-    lateinit var source:String
+    lateinit var source: String
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,17 +26,15 @@ open class EverythingActivity : AppCompatActivity() {
         layoutManager = LinearLayoutManager(baseContext)
         recycler_view_everything.layoutManager = layoutManager
 
-        if(intent != null)
-        {
+        if (intent != null) {
             source = intent.getStringExtra("sources")
             loadWebSiteSource(source)
-
         }
 
     }
 
-    private fun loadWebSiteSource(source:String) {
-        RetrofitClient.newsService.everything(source,1,5, GlobalUrl.API_KEY)
+    private fun loadWebSiteSource(source: String) {
+        NewsService.instance.everything(sources = source, page = 1, pageSize = 5)
             .enqueue(object : retrofit2.Callback<Headlines> {
                 override fun onFailure(call: Call<Headlines>?, t: Throwable?) {
                     Toast.makeText(baseContext, "Error", Toast.LENGTH_SHORT)
@@ -49,8 +46,6 @@ open class EverythingActivity : AppCompatActivity() {
                     mAdapter.notifyDataSetChanged()
                     recycler_view_everything.adapter = mAdapter
                 }
-
-
             })
     }
 
