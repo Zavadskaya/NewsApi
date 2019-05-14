@@ -10,19 +10,13 @@
     android:icon="@drawable/ic_launcher_background"
     tools:ignore="HardcodedText"
     app:actionViewClass="android.support.v7.widget.SearchView" />
-<item
-    android:id="@+id/countryFilter"
-    android:icon="@android:drawable/alert_light_frame"
-    android:title="Language"
-    app:showAsAction="never"
-    app:actionViewClass="android.widget.TextView">
-</item>
     <item
-        android:id="@+id/categoryFilter"
-        android:icon="@android:drawable/alert_dark_frame"
-        android:title="Category"
-        app:showAsAction="never"
-        app:actionViewClass="android.widget.TextView">
-    </item>
+            android:id="@+id/filter"
+            android:orderInCategory="100"
+            app:showAsAction="always"
+            android:title="Search"
+            android:icon="@drawable/filters"
+            tools:ignore="HardcodedText"
+             />
 
 </menu>

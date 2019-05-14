@@ -1,6 +1,6 @@
 package com.example.user.news.net
 
-import com.example.user.news.Interface.NewsService
+import com.example.user.news.`interface`.NewsService
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
@@ -17,11 +17,10 @@ object RetrofitClient {
                     .baseUrl(baseUrl!!)
                     .addConverterFactory(GsonConverterFactory.create())
                     .build()
+
         }
         return retrofit!!
     }
-
-
 
 
 }

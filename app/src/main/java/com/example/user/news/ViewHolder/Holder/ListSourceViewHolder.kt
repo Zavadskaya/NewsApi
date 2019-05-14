@@ -1,7 +1,7 @@
-package com.example.user.news.ViewHolder.Holder
+package com.example.user.news.viewHolder.holder
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.example.user.news.Interface.ItemClickListener
+import com.example.user.news.`interface`.ItemClickListener
 import kotlinx.android.synthetic.main.source_news_layout.view.*
 
 
@@ -9,6 +9,7 @@ class ListSourceViewHolder(itemView: View): RecyclerView.ViewHolder(itemView),Vi
 
     private lateinit var itemClickListener: ItemClickListener
     var source_title = itemView.source_news_name
+
     init{
         itemView.setOnClickListener(this)
     }

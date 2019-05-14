@@ -6,6 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="170dp"
     android:layout_margin="8dp"
+    app:cardCornerRadius="7dp"
     app:cardElevation="6dp">
 
     <TextView
@@ -24,7 +25,8 @@
         android:orientation="horizontal"
         android:weightSum="10">
 
-        <de.hdodenhof.circleimageview.CircleImageView xmlns:app="http://schemas.android.com/apk/res-auto"
+        <de.hdodenhof.circleimageview.CircleImageView
+                xmlns:app="http://schemas.android.com/apk/res-auto"
             android:id="@+id/news_image"
             android:layout_width="109dp"
             android:layout_height="111dp"

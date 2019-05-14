@@ -1,7 +1,9 @@
 <resources>
     <string name="app_name">NewsApi</string>
-    <string name="menu1">Sources</string>
-    <string name="menu2">News</string>
+    <string name="news">News</string>
+    <string name="search">Search</string>
+    <string name="source">Sources</string>
+
 
     <string-array name="categories">
         <item>business</item>
@@ -12,4 +14,12 @@
         <item>sports</item>
         <item>technology</item>
     </string-array>
+
+    <string name="web">More information...</string>
+    <string name="title_activity_news_api">NewsApiActivity</string>
+    <string name="tab_text_1">SOURCE</string>
+    <string name="tab_text_2">NEWS</string>
+    <string name="action_settings">Settings</string>
+
+
 </resources>

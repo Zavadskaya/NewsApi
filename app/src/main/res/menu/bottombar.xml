@@ -3,11 +3,15 @@
 
     <item
         android:id="@+id/menu_item1"
-        android:icon="@drawable/news"
-        android:title="@string/menu1"/>
+        android:icon="@android:drawable/ic_dialog_dialer"
+        android:title="@string/news"/>
+    <item
+            android:id="@+id/menu_item3"
+            android:icon="@android:drawable/ic_menu_sort_by_size"
+            android:title="@string/source"/>
     <item
         android:id="@+id/menu_item2"
-        android:icon="@drawable/news"
-        android:title="@string/menu2"/>
+        android:icon="@android:drawable/ic_menu_search"
+        android:title="@string/search"/>
 
 </menu>

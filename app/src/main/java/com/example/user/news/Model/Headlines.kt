@@ -1,10 +1,9 @@
-package com.example.user.news.Model
+package com.example.user.news.model
 
 class Headlines {
-    var status: String? = null
-    var code: String? = null
-    var message: String? = null
-    var totalResults: Int? = null
+    private val status: String? = null
+    private val source: String? = null
+    private val sortBy: String? = null
     lateinit var articles: List<Article>
 }
 

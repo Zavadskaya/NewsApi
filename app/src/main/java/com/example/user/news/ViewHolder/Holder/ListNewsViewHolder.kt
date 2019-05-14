@@ -1,8 +1,8 @@
-package com.example.user.news.ViewHolder.Holder
+package com.example.user.news.viewHolder.holder
 
 import android.support.v7.widget.RecyclerView
 import android.view.View
-import com.example.user.news.Interface.ItemClickListener
+import com.example.user.news.`interface`.ItemClickListener
 import kotlinx.android.synthetic.main.article_news_layout.view.*
 
 class ListNewsViewHolder(itemView: View):RecyclerView.ViewHolder(itemView),View.OnClickListener {

@@ -1,4 +1,4 @@
-package com.example.user.news.Model
+package com.example.user.news.model
 
 class Article {
     val id:String?=null
@@ -9,4 +9,6 @@ class Article {
     var url: String?=null
     var urlToImage: String?=null
     var publishedAt: String?=null
+    lateinit var sours: List<Source>
+
 }

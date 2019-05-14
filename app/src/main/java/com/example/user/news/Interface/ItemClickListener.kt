@@ -1,4 +1,4 @@
-package com.example.user.news.Interface
+package com.example.user.news.`interface`
 
 import android.view.View
 

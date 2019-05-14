@@ -3,12 +3,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/colorPrimaryDark"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.v7.widget.CardView
         android:layout_width="wrap_content"
-        android:layout_height="560dp"
+        android:layout_height="605dp"
         android:layout_marginLeft="11dp"
         android:layout_marginRight="11dp"
         android:layout_marginTop="7dp"
@@ -17,108 +16,115 @@
         app:cardCornerRadius="10dp">
 
         <RelativeLayout
-            android:backgroundTint="@color/colorPrimaryDark"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="?android:attr/selectableItemBackground">
+                android:backgroundTint="@color/colorPrimaryDark"
+                android:layout_width="376dp"
+                android:layout_height="match_parent"
+                android:background="?android:attr/selectableItemBackground">
 
             <ImageView
-                android:id="@+id/img"
-                android:layout_width="match_parent"
-                android:layout_height="248dp"
-                android:scaleType="centerCrop"
-                android:transitionName="img"
-                tools:ignore="UnusedAttribute" />
+                    android:id="@+id/img"
+                    android:layout_width="345dp"
+                    android:layout_height="247dp"
+                    android:scaleType="centerCrop"
+                    android:transitionName="img"
+                    tools:ignore="UnusedAttribute"/>
 
             <ImageView
-                android:id="@+id/shadow_bottom"
-                android:background="@color/colorPrimaryDark"
-                android:alpha="0.5"
-                android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_alignBottom="@id/img"
-                android:layout_marginBottom="15dp" />
+                    android:id="@+id/shadow_bottom"
+                    android:background="@color/colorPrimaryDark"
+                    android:alpha="0.5"
+                    android:layout_width="match_parent"
+                    android:layout_height="45dp"
+                    android:layout_alignBottom="@id/img"
+                    android:layout_marginBottom="15dp"/>
 
             <ProgressBar
-                android:id="@+id/prograss_load_photo"
-                style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="70dp" />
+                    android:id="@+id/prograss_load_photo"
+                    style="@android:style/Widget.DeviceDefault.Light.ProgressBar.Small.Inverse"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="70dp"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginStart="0dp"/>
 
             <TextView
-                android:id="@+id/author"
-                android:textColor="@android:color/white"
-                android:layout_width="match_parent"
-                android:layout_height="30dp"
-                android:layout_alignStart="@+id/title"
-                android:layout_alignLeft="@+id/title"
-                android:layout_alignTop="@+id/layoutDate"
-                android:layout_alignEnd="@id/layoutDate"
-                android:layout_alignRight="@id/layoutDate"
-                android:layout_marginRight="160dp"
-                android:drawablePadding="10dp"
-                android:ellipsize="end"
-                android:gravity="bottom"
-                android:maxLines="1"
-                android:singleLine="true"
-                android:text="Author" />
+                    android:id="@+id/author"
+                    android:textColor="@android:color/white"
+                    android:layout_width="match_parent"
+                    android:layout_height="30dp"
+                    android:layout_alignStart="@+id/title"
+                    android:layout_alignLeft="@+id/title"
+                    android:layout_alignTop="@+id/layoutDate"
+                    android:layout_alignEnd="@id/layoutDate"
+                    android:layout_alignRight="@id/layoutDate"
+                    android:layout_marginRight="160dp"
+                    android:drawablePadding="10dp"
+                    android:ellipsize="end"
+                    android:gravity="bottom"
+                    android:maxLines="1"
+                    android:singleLine="true"
+                    android:text="Author"/>
 
             <FrameLayout
-                android:id="@+id/layoutDate"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/img"
-                android:layout_alignParentRight="true"
-                android:layout_marginTop="-50dp"
-                android:layout_marginRight="20dp"
-                android:padding="5dp">
-
-                <ImageView
-                    android:layout_width="18dp"
-                    android:layout_height="18dp"
-                    android:layout_marginLeft="5dp"
-                    android:layout_marginRight="5dp" />
-
-                <TextView
-                    android:id="@+id/publishedAt"
+                    android:id="@+id/layoutDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="27dp"
-                    android:layout_marginRight="10dp"
-                    android:text="01 January 1990"
-                    android:textColor="@android:color/white" />
+                    android:layout_below="@id/img"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="-50dp"
+                    android:layout_marginRight="20dp"
+                    android:padding="5dp">
 
+                <ImageView
+                        android:layout_width="18dp"
+                        android:layout_height="18dp"
+                        android:layout_marginLeft="5dp"
+                        android:layout_marginRight="5dp"/>
 
+                <TextView
+                        android:id="@+id/publishedAt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="60dp"
+                        android:layout_marginRight="60dp"
+                        android:text="01 January 1990"
+                        android:textColor="@android:color/white"/>
             </FrameLayout>
 
 
             <TextView
-                android:id="@+id/title"
-                android:layout_width="326dp"
-                android:layout_height="43dp"
-                android:layout_below="@id/img"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="10dp"
-                android:layout_marginRight="16dp"
-                android:fontFamily="sans-serif-light"
-                android:text="Title"
-                android:textColor="@color/colorPrimaryDark"
-                android:textSize="17sp"
-                android:textStyle="bold" />
+                    android:id="@+id/title"
+                    android:layout_width="326dp"
+                    android:layout_height="43dp"
+                    android:layout_below="@id/img"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="10dp"
+                    android:layout_marginRight="16dp"
+                    android:fontFamily="sans-serif-light"
+                    android:text="Title"
+                    android:textColor="@color/colorPrimaryDark"
+                    android:textSize="17sp"
+                    android:textStyle="bold"/>
 
 
             <TextView
-                android:id="@+id/desc"
-                android:layout_width="333dp"
-                android:layout_height="249dp"
-                android:layout_below="@id/title"
-                android:layout_marginLeft="16dp"
-                android:layout_marginTop="5dp"
-                android:layout_marginRight="16dp"
-                android:text="Desc"
-                android:textSize="13dp"
-                android:textStyle="bold" />
+                    android:id="@+id/desc"
+                    android:layout_width="314dp"
+                    android:layout_height="171dp"
+                    android:layout_below="@id/title"
+                    android:layout_marginLeft="16dp"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginRight="16dp"
+                    android:text="Desc"
+                    android:textSize="13dp"
+                    android:textStyle="bold"/>
+            <TextView
+                    android:id="@+id/webView"
+                    android:text="@string/web"
+                    android:layout_width="315dp"
+                    android:layout_height="40dp" android:layout_alignParentStart="true"
+                    android:layout_marginStart="29dp" android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="56dp"/>
 
 
         </RelativeLayout>
