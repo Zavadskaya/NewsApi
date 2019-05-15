@@ -8,8 +8,8 @@ import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import android.widget.Toast
 import com.example.user.news.R
-import com.example.user.news.`interface`.NewsService
 import com.example.user.news.model.Sources
+import com.example.user.news.net.NewsService
 import com.example.user.news.viewHolder.adapter.ListSourceAdapter
 import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_source.*

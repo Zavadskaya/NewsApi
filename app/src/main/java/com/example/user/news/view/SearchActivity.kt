@@ -22,23 +22,23 @@ class SearchActivity : AppCompatActivity(), BottomSheet.OnInputListener{
     val newsFragment = NewsFragment.newInstance("general", 0)
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(com.example.user.news.R.layout.activity_search)
+        setContentView(R.layout.activity_search)
 
 
-        val  viewPager = findViewById<ViewPager>(com.example.user.news.R.id.viewpager)
+        val viewPager = findViewById<ViewPager>(R.id.viewpager)
         setupViewPager(viewPager)
 
-        val tabLayout = findViewById<TabLayout>(com.example.user.news.R.id.tabs)
+        val tabLayout = findViewById<TabLayout>(R.id.tabs)
         tabLayout.setupWithViewPager(viewPager)
 
-        val toolbar: Toolbar = findViewById<Toolbar>(com.example.user.news.R.id.toolbars)
+        val toolbar: Toolbar = findViewById<Toolbar>(R.id.toolbars)
         setSupportActionBar(toolbar)
         supportActionBar!!.setDisplayShowTitleEnabled(false)
 
 
 
-        bottomNavigationView = findViewById(com.example.user.news.R.id.navigation)
-        bottomNavigationView.selectedItemId = com.example.user.news.R.id.menu_item2
+        bottomNavigationView = findViewById(R.id.navigation)
+        bottomNavigationView.selectedItemId = R.id.menu_item2
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->
             intent = Intent(this, MainActivity::class.java)
             val intent2 =Intent(this,SourceActivity::class.java)
@@ -55,9 +55,9 @@ class SearchActivity : AppCompatActivity(), BottomSheet.OnInputListener{
 
     override fun onCreateOptionsMenu(menu: Menu): Boolean {
         val inflater = menuInflater
-        inflater.inflate(com.example.user.news.R.menu.list_menu, menu)
-        val menuItem = menu.findItem(com.example.user.news.R.id.searchMenu)
-                val menuItm = menu.findItem(com.example.user.news.R.id.filter)
+        inflater.inflate(R.menu.list_menu, menu)
+        val menuItem = menu.findItem(R.id.searchMenu)
+        val menuItm = menu.findItem(R.id.filter)
            menuItm.setOnMenuItemClickListener{
                showBottomSheetDialogFragment()
                true
@@ -68,14 +68,14 @@ class SearchActivity : AppCompatActivity(), BottomSheet.OnInputListener{
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (query.length > 2) {
-                    newsFragment.loadWebSiteSource(" "," ",query)
+                    newsFragment.loadWebSiteSource(" ", query)
                 }
                 return false
             }
 
 
             override fun onQueryTextChange(newText: String): Boolean {
-                newsFragment.loadWebSiteSource(" ", " ", newText)
+                newsFragment.loadWebSiteSource(" ", newText)
 
                 return false
             }
@@ -95,7 +95,7 @@ class SearchActivity : AppCompatActivity(), BottomSheet.OnInputListener{
         bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
     override fun sendInput(input: String,output:String) {
-        newsFragment.loadWebSiteSource(output,input," ")
+        newsFragment.loadWebSiteSource(input, " ")
     }
 
 }

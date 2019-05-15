@@ -1,6 +1,5 @@
 package com.example.user.news.viewHolder.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -14,7 +13,7 @@ import com.example.user.news.view.ArticleActivity
 import com.example.user.news.viewHolder.holder.ListNewsViewHolder
 import com.squareup.picasso.Picasso
 
-class ListNewsAdapter(private val context: Context, private val articles: Headlines) :
+class ListNewsAdapter(private val articles: Headlines) :
     RecyclerView.Adapter<ListNewsViewHolder>() {
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListNewsViewHolder {
         val inflater = LayoutInflater.from(parent.context)

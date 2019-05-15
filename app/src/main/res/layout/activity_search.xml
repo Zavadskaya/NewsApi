@@ -13,14 +13,15 @@
             android:layout_height="77dp">
     </android.support.v7.widget.Toolbar>
 
-    <com.mancj.materialsearchbar.MaterialSearchBar
+    <com.miguelcatalan.materialsearchview.MaterialSearchView
             app_mt_speechMode="true"
             app_mt_hint="Custom hint"
             app_theme="@style/AppTheme.PopupOverlay"
             app_mt_maxSuggestionsCount="5"
-            android_layout_width="match_parent"
-            android_layout_height="wrap_content"
-            android_id="@+id/searchBar" />
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:id="@+id/searchBar"/>
+
     <android.support.design.widget.TabLayout
             android:id="@+id/tabs"
             android:layout_width="match_parent"

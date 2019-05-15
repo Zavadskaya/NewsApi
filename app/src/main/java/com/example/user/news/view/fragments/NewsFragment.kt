@@ -2,6 +2,7 @@ package com.example.user.news.view.fragments
 
 
 import android.os.Bundle
+import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
@@ -10,12 +11,13 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.Toast
-import com.example.user.news.`interface`.NewsService
 import com.example.user.news.model.Headlines
+import com.example.user.news.net.NewsService
 import com.example.user.news.viewHolder.adapter.ListNewsAdapter
 import kotlinx.android.synthetic.main.activity_news.*
 import retrofit2.Call
 import retrofit2.Response
+import java.util.*
 
 
 open class NewsFragment : Fragment() {
@@ -68,7 +70,7 @@ open class NewsFragment : Fragment() {
         recycler_view_news.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(context)
         recycler_view_news.layoutManager = layoutManager
-        loadWebSiteSource(" ", contents, " ")
+        loadWebSiteSource(contents, " ")
 
         recycler_view_news.addOnScrollListener(
             object : RecyclerView.OnScrollListener() {
@@ -87,14 +89,14 @@ open class NewsFragment : Fragment() {
 
                     if (isScrolling && (currentItem + scrollOutItem == totalItem)) {
                         isScrolling = false
-                        loadWebSiteSource(" ", contents, " ")
+                        loadWebSiteSource(contents, " ")
                     }
                 }
             })
 
     }
 
-    fun loadWebSiteSource(country: String, category: String, keyword: String) {
+    fun loadWebSiteSource(category: String, keyword: String) {
         /* val cache: String = Paper.book().read("cache")
          if (!cache.isEmpty() && cache != " ") {
              val headlines: Headlines = Gson().fromJson(cache, Headlines::class.java)
@@ -104,6 +106,12 @@ open class NewsFragment : Fragment() {
              recycler_view_news.adapter = mAdapter
          } else {*/
 
+        //TODO separate class for Country Prefs
+        val сountriesList = Locale.getISOCountries()
+        val defValue = сountriesList.indexOf("RU")
+        val savedCountryPos = PreferenceManager.getDefaultSharedPreferences(context).getInt("saved", defValue)
+        val country = сountriesList.get(savedCountryPos)
+
         NewsService.instance.articles(country = country, category = category, keyword = keyword)
             .enqueue(object : retrofit2.Callback<Headlines> {
                 override fun onFailure(call: Call<Headlines>?, t: Throwable?) {
@@ -112,8 +120,9 @@ open class NewsFragment : Fragment() {
                 }
 
                 override fun onResponse(call: Call<Headlines>?, response: Response<Headlines>?) {
+                    //TODO check if response success - response.isSuccessful
                     mAdapter = response!!.body()?.let {
-                        ListNewsAdapter(context!!, it)
+                        ListNewsAdapter(it)
                     }!!
                     recycler_view_news.adapter = mAdapter
                     mAdapter.notifyDataSetChanged()

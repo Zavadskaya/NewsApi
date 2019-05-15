@@ -4,8 +4,9 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.widget.Toast
-import com.example.user.news.`interface`.NewsService
+
 import com.example.user.news.model.Headlines
+import com.example.user.news.net.NewsService
 import com.example.user.news.viewHolder.adapter.ListNewsAdapter
 import kotlinx.android.synthetic.main.activity_everything.*
 import retrofit2.Call
@@ -30,7 +31,6 @@ open class EverythingActivity : AppCompatActivity() {
             source = intent.getStringExtra("sources")
             loadWebSiteSource(source)
         }
-
     }
 
     private fun loadWebSiteSource(source: String) {
@@ -42,7 +42,7 @@ open class EverythingActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call<Headlines>?, response: Response<Headlines>?) {
-                    mAdapter = ListNewsAdapter(baseContext!!, response?.body()!!)
+                    mAdapter = ListNewsAdapter(response?.body()!!)
                     mAdapter.notifyDataSetChanged()
                     recycler_view_everything.adapter = mAdapter
                 }

@@ -1,9 +1,9 @@
-package com.example.user.news.`interface`
+package com.example.user.news.net
 
 import android.util.Log
 import com.example.user.news.model.Headlines
 import com.example.user.news.model.Sources
-import com.example.user.news.net.GlobalUrl
+import com.example.user.news.net.GlobalUrl.getApiKey
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -18,7 +18,7 @@ interface NewsService {
     fun sources(
         @Query("country") sources: String,
         @Query("category") category: String,
-        @Query("apiKey") apiKey: String = GlobalUrl.API_KEY
+        @Query("apiKey") apiKey: String = getApiKey()
     ): Call<Sources>
 
 
@@ -26,7 +26,7 @@ interface NewsService {
     fun articles(
         @Query("country") country: String,
         @Query("category") category: String,
-        @Query("apiKey") apiKey: String = GlobalUrl.API_KEY,
+        @Query("apiKey") apiKey: String = getApiKey(),
         @Query("q") keyword: String
     ): Call<Headlines>
 
@@ -35,7 +35,7 @@ interface NewsService {
         @Query("sources") sources: String,
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int,
-        @Query("apiKey") api: String = GlobalUrl.API_KEY
+        @Query("apiKey") api: String = getApiKey()
     ): Call<Headlines>
 
 

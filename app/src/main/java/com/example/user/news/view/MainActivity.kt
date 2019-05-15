@@ -12,14 +12,12 @@ import com.example.user.news.R.*
 import com.example.user.news.view.fragments.FragmentDialog
 import com.example.user.news.view.fragments.NewsFragment
 import com.example.user.news.viewHolder.adapter.FragmentAdapter
-import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(), FragmentDialog.OnInputListener {
 
     lateinit var bottomNavigationView: BottomNavigationView
 
-    var newsTabs: ArrayList<NewsFragment> = ArrayList()
     val adapter = FragmentAdapter(supportFragmentManager)
 
     @SuppressLint("WrongViewCast")
@@ -54,27 +52,22 @@ class MainActivity : AppCompatActivity(), FragmentDialog.OnInputListener {
         }
     }
 
-
     private fun setupViewPager(viewPager: ViewPager) {
         val arrayCategory = resources.getStringArray(array.categories)
 
         for (i in 0 until arrayCategory.size) {
             val newsFragment = NewsFragment.newInstance(arrayCategory[i].toString(), i)
             adapter.addFragment(newsFragment, arrayCategory[i].toString())
-            newsTabs.add(newsFragment)
         }
         viewPager.adapter = adapter
     }
-
 
     private fun chamarMyDialog() {
         FragmentDialog().show(supportFragmentManager, "my_fragment")
     }
 
-    //FIXME Change update date to reload ViewPager and get category from Shared Prefs
-    //https://stackoverflow.com/questions/18088076/update-fragment-from-viewpager
-    override fun sendInput(input: String) {
-        newsTabs[tabs_main.selectedTabPosition].loadWebSiteSource(input, "", "")
+    override fun sendInput() {
+        adapter.notifyDataSetChanged()
     }
 }
 

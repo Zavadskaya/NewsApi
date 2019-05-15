@@ -3,6 +3,7 @@ package com.example.user.news.viewHolder.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentStatePagerAdapter
+import android.support.v4.view.PagerAdapter
 
 
 class FragmentAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
@@ -28,9 +29,10 @@ class FragmentAdapter(fm: FragmentManager) : FragmentStatePagerAdapter(fm) {
 
     override fun getPageTitle(position: Int): CharSequence? {
         return   mFragmentTitleList[position]
-
-
     }
 
+    override fun getItemPosition(item: Any): Int {
+        return PagerAdapter.POSITION_NONE
+    }
 
 }

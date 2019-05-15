@@ -28,7 +28,7 @@ class FragmentDialog : DialogFragment() {
     lateinit var spinerCountry: Spinner
 
     interface OnInputListener {
-        fun sendInput(input: String)
+        fun sendInput()
     }
 
     lateinit var mOutput: OnInputListener
@@ -61,24 +61,15 @@ class FragmentDialog : DialogFragment() {
         alert.setTitle("Filter panel")
 
         this.done!!.setOnClickListener {
-
-            val a: String = spinerCountry.selectedItem.toString()
-
-            mOutput.sendInput(a /*(getActivity() as NewsFragment).getPosition()*/)
-
             saveData(spinerCountry.selectedItemPosition)
+            mOutput.sendInput()
             dialog.dismiss()
-
         }
         this.cancel!!.setOnClickListener {
             Log.d(TAG, "onClick:closing dialog")
             dialog.dismiss()
-
         }
-
-
         return alert.create()
-
     }
 
     private fun saveData(position: Int) {
