@@ -11,7 +11,7 @@ import dmax.dialog.SpotsDialog
 import kotlinx.android.synthetic.main.activity_web_view.*
 
 class WebViewActivity : AppCompatActivity() {
-    lateinit var alertDialog:SpotsDialog
+    lateinit var alertDialog: SpotsDialog
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -26,19 +26,18 @@ class WebViewActivity : AppCompatActivity() {
         val web: WebView = this.findViewById(R.id.web)
         web.settings.javaScriptEnabled = true
         web.webChromeClient = WebChromeClient()
-        web.webViewClient = object: WebViewClient()
-        {
+        web.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
-                   alertDialog.dismiss()
+                alertDialog.dismiss()
             }
         }
-        if(intent!=null)
-        {
-                web.loadUrl(intent.getStringExtra("url"))
+        if (intent != null) {
+            web.loadUrl(intent.getStringExtra("url"))
 
         }
 
     }
+
     override fun onBackPressed() {
         when {
             web!!.canGoBack() -> web.goBack()

@@ -1,51 +1,51 @@
 <?xml version="1.0" encoding="utf-8"?>
-    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    xmlns:app="http://schemas.android.com/apk/res-auto"
-                    xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                 tools:context=".view.SourceActivity">
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+             xmlns:app="http://schemas.android.com/apk/res-auto"
+             xmlns:tools="http://schemas.android.com/tools" android:id="@+id/container"
+             android:layout_width="match_parent"
+             android:layout_height="match_parent"
+             tools:context=".view.SourceActivity">
 
 
-<RelativeLayout
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content">
-
-    <android.support.v7.widget.Toolbar
-            android:id="@+id/toolbars"
-            android:layout_width="370dp"
-            android:layout_height="wrap_content">
-
-    </android.support.v7.widget.Toolbar>
-
-    <FrameLayout
-            android:id="@+id/toolbar_container"
-            android:layout_width="386dp"
-            android:layout_height="653dp">
-
-        <android.support.v7.widget.RecyclerView
-                android:id="@+id/recycler_view_source_news"
-                android:layout_width="338dp"
-                android:layout_height="617dp"
-                android:layout_marginStart="10dp"
-                android:layout_marginLeft="5dp"
-                android:layout_marginEnd="10dp"
-                android:layout_marginRight="5dp"
-                android:layout_marginBottom="10dp"
-                tools:spanCount="5"/>
-
-    </FrameLayout>
-    <android.support.design.widget.BottomNavigationView
-            android:id="@+id/navigation"
-            android:layout_width="match_parent"
+    <RelativeLayout
+            android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"
-            app:itemBackground="@android:color/white"
-            app:itemIconTint="@color/colorPrimaryDark"
-            app:itemTextColor="@color/colorPrimaryDark"
-            app:menu="@menu/bottombar"
-            android:layout_marginBottom="0dp"/>
+            tools:ignore="UselessParent">
+
+        <android.support.v7.widget.Toolbar
+                android:id="@+id/toolbars"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent">
+        </android.support.v7.widget.Toolbar>
+
+        <FrameLayout
+                android:id="@+id/toolbar_container"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+            <android.support.v7.widget.RecyclerView
+                    android:id="@+id/recycler_view_source_news"
+                    android:layout_width="match_parent"
+                    android:layout_height="658dp"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginLeft="5dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_marginRight="5dp"
+                    android:layout_marginBottom="10dp"
+            />
+
+        </FrameLayout>
+        <android.support.design.widget.BottomNavigationView
+                android:id="@+id/navigation"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                app:itemBackground="@android:color/white"
+                app:itemIconTint="@color/colorPrimaryDark"
+                app:itemTextColor="@color/colorPrimaryDark"
+                app:menu="@menu/bottombar"
+                android:layout_marginBottom="0dp"/>
 
 
-</RelativeLayout>
+    </RelativeLayout>
 </FrameLayout>

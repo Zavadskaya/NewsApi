@@ -37,7 +37,8 @@
             android:layout_alignParentRight="true"
             android:layout_marginRight="20dp"
             android:layout_marginBottom="75dp"
-            android:foregroundTintMode="add" app:backgroundTint="@color/colorText"
+            android:foregroundTintMode="add"
+            app:backgroundTint="@color/colorText"
             tools:ignore="RelativeOverlap"/>
 
     <android.support.design.widget.BottomNavigationView

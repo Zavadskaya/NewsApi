@@ -3,6 +3,7 @@ package com.example.user.news.view
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.util.Log
 import android.widget.Toast
 
 import com.example.user.news.model.Headlines
@@ -12,7 +13,7 @@ import kotlinx.android.synthetic.main.activity_everything.*
 import retrofit2.Call
 import retrofit2.Response
 
-open class EverythingActivity : AppCompatActivity() {
+open class  EverythingActivity : AppCompatActivity() {
 
     lateinit var layoutManager: LinearLayoutManager
     lateinit var mAdapter: ListNewsAdapter
@@ -34,7 +35,7 @@ open class EverythingActivity : AppCompatActivity() {
     }
 
     private fun loadWebSiteSource(source: String) {
-        NewsService.instance.everything(sources = source, page = 1, pageSize = 5)
+        NewsService.instance.everything(sources = source,page = 1,pageSize = 5)
             .enqueue(object : retrofit2.Callback<Headlines> {
                 override fun onFailure(call: Call<Headlines>?, t: Throwable?) {
                     Toast.makeText(baseContext, "Error", Toast.LENGTH_SHORT)
@@ -42,9 +43,20 @@ open class EverythingActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call<Headlines>?, response: Response<Headlines>?) {
-                    mAdapter = ListNewsAdapter(response?.body()!!)
-                    mAdapter.notifyDataSetChanged()
-                    recycler_view_everything.adapter = mAdapter
+                    if (response!!.isSuccessful) {
+                        mAdapter = ListNewsAdapter(response.body()!!)
+                        mAdapter.notifyDataSetChanged()
+                        recycler_view_everything.adapter = mAdapter
+                    } else {
+                        when (response.code()) {
+                            404 -> {
+                                Log.e("error", "Page is not found!")
+                            }
+                            500 -> {
+                                Log.e("error", "Server error!")
+                            }
+                        }
+                    }
                 }
             })
     }

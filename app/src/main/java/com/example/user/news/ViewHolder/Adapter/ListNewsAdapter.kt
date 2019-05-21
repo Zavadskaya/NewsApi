@@ -7,14 +7,23 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.user.news.R
 import com.example.user.news.`interface`.ItemClickListener
+import com.example.user.news.model.Article
 import com.example.user.news.model.Headlines
+import com.example.user.news.model.Sources
 import com.example.user.news.net.GlobalUrl
 import com.example.user.news.view.ArticleActivity
 import com.example.user.news.viewHolder.holder.ListNewsViewHolder
+import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 
 class ListNewsAdapter(private val articles: Headlines) :
     RecyclerView.Adapter<ListNewsViewHolder>() {
+
+     var sourceSearchList: List<Article>
+
+    init {
+        this.sourceSearchList = articles.articles
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListNewsViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemView = inflater.inflate(com.example.user.news.R.layout.article_news_layout, parent, false)
@@ -23,9 +32,11 @@ class ListNewsAdapter(private val articles: Headlines) :
 
     override fun onBindViewHolder(holder: ListNewsViewHolder, position: Int) {
         holder.article_title.text = articles.articles[position].title.toString()
-        if (articles.articles[position].urlToImage != null)
+        var image = articles.articles[position].urlToImage.toString()
+        if (image!=" ")
             Picasso.get()
                 .load(articles.articles[position].urlToImage)
+                .networkPolicy(NetworkPolicy.OFFLINE)
                 .into(holder.imageView)
         else {
             holder.imageView.setImageResource(R.drawable.news)

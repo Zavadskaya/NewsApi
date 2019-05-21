@@ -13,6 +13,8 @@ import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
 import android.widget.Toast
+import com.example.user.news.Common.FilterISO
+import com.example.user.news.Common.SharedPrefer
 import java.util.*
 
 class FragmentDialog : DialogFragment() {
@@ -39,13 +41,12 @@ class FragmentDialog : DialogFragment() {
         val countries = Locale.getISOCountries()
         val _view: View = activity!!.layoutInflater.inflate(com.example.user.news.R.layout.custom_layout, null)
 
-
         spinerCountry = _view.findViewById(com.example.user.news.R.id.dialogCountry)
 
         val adapter = ArrayAdapter(
             context!!,
             android.R.layout.simple_spinner_item,
-            countries
+            FilterISO.getCountry()
         )
 
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
@@ -61,7 +62,7 @@ class FragmentDialog : DialogFragment() {
         alert.setTitle("Filter panel")
 
         this.done!!.setOnClickListener {
-            saveData(spinerCountry.selectedItemPosition)
+            SharedPrefer.saveData(spinerCountry.selectedItemPosition,context!!)
             mOutput.sendInput()
             dialog.dismiss()
         }
@@ -70,16 +71,6 @@ class FragmentDialog : DialogFragment() {
             dialog.dismiss()
         }
         return alert.create()
-    }
-
-    private fun saveData(position: Int) {
-        val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
-        val prefEditor = prefs.edit()
-        prefEditor.putInt("saved", position)
-        prefEditor.apply()
-        Toast.makeText(context, "Data saved", Toast.LENGTH_LONG).show()
-
-
     }
 
     private fun loadView() {

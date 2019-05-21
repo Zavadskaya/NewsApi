@@ -68,10 +68,22 @@ class SourceActivity : AppCompatActivity() {
                 }
 
                 override fun onResponse(call: Call<Sources>, response: Response<Sources>) {
+                    if(response.isSuccessful)
+                    {
                     adapter = ListSourceAdapter(baseContext!!, response.body()!!)
                     recycler_view_source_news.adapter = adapter
                     adapter.notifyDataSetChanged()
                     Log.e("Response", response.toString())
+                } else {
+                        when (response.code()) {
+                            404 -> {
+                                Log.e("error", "Page is not found!")
+                            }
+                            500 -> {
+                                Log.e("error", "Server error!")
+                            }
+                        }
+                    }
                 }
             })
     }
