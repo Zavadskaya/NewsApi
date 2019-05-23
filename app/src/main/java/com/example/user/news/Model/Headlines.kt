@@ -1,6 +1,8 @@
 package com.example.user.news.model
 
-class Headlines {
+import io.realm.RealmObject
+
+class Headlines  {
     private val status: String? = null
     private val source: String? = null
     private val sortBy: String? = null

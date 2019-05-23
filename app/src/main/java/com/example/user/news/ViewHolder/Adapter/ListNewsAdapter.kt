@@ -32,8 +32,8 @@ class ListNewsAdapter(private val articles: Headlines) :
 
     override fun onBindViewHolder(holder: ListNewsViewHolder, position: Int) {
         holder.article_title.text = articles.articles[position].title.toString()
-        var image = articles.articles[position].urlToImage.toString()
-        if (image!=" ")
+        val image = articles.articles[position].urlToImage.toString()
+        if (image !=null)
             Picasso.get()
                 .load(articles.articles[position].urlToImage)
                 .networkPolicy(NetworkPolicy.OFFLINE)

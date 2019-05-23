@@ -17,14 +17,12 @@ import com.example.user.news.Common.SharedPrefer
 import com.example.user.news.model.Headlines
 import com.example.user.news.net.NewsService
 import com.example.user.news.viewHolder.adapter.ListNewsAdapter
-import kotlinx.android.synthetic.main.activity_news.*
 import retrofit2.Call
 import retrofit2.Response
 import java.util.*
 import android.R.bool
 import android.R
-
-
+import retrofit2.Callback
 
 
 open class NewsFragment : Fragment() {
@@ -135,7 +133,7 @@ open class NewsFragment : Fragment() {
                 category = category,
                 keyword = keyword
             )
-                .enqueue(object : retrofit2.Callback<Headlines> {
+                .enqueue(object : Callback<Headlines> {
                     override fun onFailure(call: Call<Headlines>?, t: Throwable?) {
                         Toast.makeText(context, "Error", Toast.LENGTH_SHORT)
                             .show()

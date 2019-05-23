@@ -1,6 +1,8 @@
 package com.example.user.news.model
 
-class Article {
+import io.realm.RealmObject
+
+class Article{
     val id:String?=null
     var source: Source?=null
     var author: String?=null
@@ -10,5 +12,7 @@ class Article {
     var urlToImage: String?=null
     var publishedAt: String?=null
     lateinit var sours: List<Source>
+
+
 
 }
