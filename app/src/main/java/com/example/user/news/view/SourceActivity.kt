@@ -16,8 +16,7 @@ import kotlinx.android.synthetic.main.activity_source.*
 import retrofit2.Call
 import retrofit2.Response
 
-
-class SourceActivity : AppCompatActivity() {
+ class SourceActivity : AppCompatActivity() {
 
     lateinit var layoutManager: LinearLayoutManager
     lateinit var adapter: ListSourceAdapter

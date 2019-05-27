@@ -3,7 +3,6 @@ package com.example.user.news.view.fragments
 import android.app.AlertDialog
 import android.app.Dialog
 import android.content.Context
-import android.content.SharedPreferences
 import android.os.Bundle
 import android.preference.PreferenceManager
 import android.support.v4.app.DialogFragment
@@ -12,10 +11,9 @@ import android.view.View
 import android.widget.ArrayAdapter
 import android.widget.Button
 import android.widget.Spinner
-import android.widget.Toast
-import com.example.user.news.Common.FilterISO
-import com.example.user.news.Common.SharedPrefer
-import java.util.*
+import com.example.user.news.commons.FilterISO
+import com.example.user.news.commons.SharedPrefer
+
 
 class FragmentDialog : DialogFragment() {
 
@@ -38,7 +36,6 @@ class FragmentDialog : DialogFragment() {
 
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
 
-        val countries = Locale.getISOCountries()
         val _view: View = activity!!.layoutInflater.inflate(com.example.user.news.R.layout.custom_layout, null)
 
         spinerCountry = _view.findViewById(com.example.user.news.R.id.dialogCountry)

@@ -1,6 +1,10 @@
 package com.example.user.news.model
 
-class Source  {
+import io.realm.RealmModel
+import io.realm.annotations.RealmClass
+
+@RealmClass
+open class Source:RealmModel  {
 
     var id: String? = null
     var name: String? = null
@@ -10,22 +14,5 @@ class Source  {
     var language: String? = null
     var country: String? = null
 
-    constructor(
-        Id: String?,
-        Name: String?,
-        Description: String?,
-        Url: String?,
-        Category: String?,
-        Language: String?,
-        Country: String?
-    )
-    {
-        this.id = Id
-        this.name = Name
-        this.description = Description
-        this.url = Url
-        this.category = Category
-        this.language = Language
-        this.country = Country
-    }
+
 }

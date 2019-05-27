@@ -2,48 +2,47 @@ package com.example.user.news.view.fragments
 
 
 import android.os.Bundle
-import android.preference.PreferenceManager
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
-import android.support.v7.widget.RecyclerView
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AbsListView
 import android.widget.ProgressBar
 import android.widget.Toast
-import com.example.user.news.Common.SharedPrefer
+import com.example.user.news.R
+import com.example.user.news.commons.SharedPrefer
+import com.example.user.news.model.Article
 import com.example.user.news.model.Headlines
 import com.example.user.news.net.NewsService
 import com.example.user.news.viewHolder.adapter.ListNewsAdapter
+import kotlinx.android.synthetic.main.activity_news.*
 import retrofit2.Call
 import retrofit2.Response
-import java.util.*
-import android.R.bool
-import android.R
-import retrofit2.Callback
+
+import io.realm.Realm
+import io.realm.RealmConfiguration
+import io.realm.RealmList
+import kotlin.random.Random
 
 
 open class NewsFragment : Fragment() {
 
     lateinit var layoutManager: LinearLayoutManager
     lateinit var mAdapter: ListNewsAdapter
+    var data: Headlines = Headlines(articles = RealmList())
     var text: String = ""
     var n: Int = 0
-    private var previousTotal = 0 // The total number of items in the dataset after the last load
-    private var loading = true // True if we are still waiting for the last set of data to load.
-    private val visibleThreshold = 5 // The minimum amount of items to have below your current scroll position before loading more.
-    var firstVisibleItem: Int = 0
-    var visibleItemCount:Int = 0
-    var totalItemCount:Int = 0
+    var isLoading = false
+    var pagesize = 10
+    var page = 1
 
-    private var current_page = 1
-
-    var progress:ProgressBar? = null
+    lateinit var realm: Realm
+    lateinit var configuration: RealmConfiguration
+    lateinit var lists:RealmList<Article>
 
 
-
+    var progress: ProgressBar? = null
 
     companion object {
         const val ARG_TEXT = "agrText"
@@ -80,88 +79,95 @@ open class NewsFragment : Fragment() {
 
         val contents = text
 
-        progress = view!!.findViewById<ProgressBar>(com.example.user.news.R.id.progressBar)
+        progress = view!!.findViewById(R.id.progressBar)
         recycler_view_news.setHasFixedSize(true)
+        mAdapter = ListNewsAdapter(articles = data)
+        recycler_view_news.adapter = mAdapter
         layoutManager = LinearLayoutManager(context)
         recycler_view_news.layoutManager = layoutManager
-        loadWebSiteSource(contents, " ")
 
-        recycler_view_news.addOnScrollListener(
-            object : RecyclerView.OnScrollListener() {
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    if (newState == AbsListView.OnScrollListener.SCROLL_STATE_TOUCH_SCROLL) {
-                        loading = true
-                    }
+        loadWebSiteSource(contents, page, pagesize, " ")
+
+
+        recycler_view_news.addOnScrollListener(object : EndlessRecyclerOnScrollListener(layoutManager) {
+            override fun loadMoreItems() {
+                if (!isLoading) {
+
+
+                    loadWebSiteSource(contents, ++page, pagesize, " ")
+                    mAdapter.notifyDataSetChanged()
+                }
+            }
+        })
+
+        //realm
+        Realm.init(context!!)
+
+        configuration = RealmConfiguration.Builder()
+            .name("newest.realm")
+            .deleteRealmIfMigrationNeeded()
+            .build()
+        realm = Realm.getInstance(configuration)
+
+    }
+
+    fun loadWebSiteSource(category: String, page: Int, pagesize: Int, keyword: String) {
+        progressBar.visibility = View.VISIBLE
+        NewsService.instance.articles(
+            country = SharedPrefer.loadData(context!!),
+            pageSize = pagesize,
+            page = page,
+            category = category,
+            keyword = keyword
+        )
+            .enqueue(object : retrofit2.Callback<Headlines> {
+                override fun onFailure(call: Call<Headlines>?, t: Throwable?) {
+                    Toast.makeText(context, "Error", Toast.LENGTH_SHORT)
+                        .show()
+
+                    /*val news = realm.where(Headlines::class.java).findAll()
+                    for (i in 0 until news.size) {
+                        val list = news[i]!!.articles
+                        data.articles.addAll(list)
+                    }*/
                 }
 
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    visibleItemCount = layoutManager.childCount
-                    totalItemCount = layoutManager.itemCount
-                    firstVisibleItem = layoutManager.findFirstVisibleItemPosition()
+                override fun onResponse(call: Call<Headlines>?, response: Response<Headlines>?) {
+                    //TODO check if response success - response.isSuccessful
+                    if (response!!.isSuccessful) {
 
-                    if (loading)
-                    {
-                        if (totalItemCount > previousTotal)
-                        {
-                            loading = false
-                            previousTotal = totalItemCount
-                        }
-                        if (!loading && (totalItemCount - visibleItemCount) <= (firstVisibleItem + visibleThreshold))
-                        {
-                            current_page++
-                            Log.e("Page",current_page++.toString())
-                            loadWebSiteSource(contents," ")
-                            loading = true
-                        }
+                        val list = response.body()!!.let { it }
+                        data.articles.addAll(list.articles)
 
-                        /*if ((visibleItemCount + pastVisiblesItems) >= totalItemCount)
-                        {
-                            LoadMoreEvent(this, null);
-                        }*/
+                        /*val news = realm.where(Article::class.java).findAll()*/
+                         realm.run {
+                                beginTransaction()
+                                copyToRealm(data.articles)
+                                commitTransaction()
+                            }
+
+                            mAdapter.notifyDataSetChanged()
+
+
+
+
+                        progressBar.visibility = View.GONE
+
+                    } else {
+                        when (response.code()) {
+                            404 -> {
+                                Log.e("error", "Page is not found!")
+                            }
+                            500 -> {
+                                Log.e("error", "Server error!")
+                            }
+                        }
                     }
                 }
             })
 
     }
 
-    fun loadWebSiteSource(category: String, keyword: String) {
-        progressBar.visibility = View.VISIBLE
-            NewsService.instance.articles(
-                country = SharedPrefer.loadData(context!!),
-                category = category,
-                keyword = keyword
-            )
-                .enqueue(object : Callback<Headlines> {
-                    override fun onFailure(call: Call<Headlines>?, t: Throwable?) {
-                        Toast.makeText(context, "Error", Toast.LENGTH_SHORT)
-                            .show()
-                    }
-
-                    override fun onResponse(call: Call<Headlines>?, response: Response<Headlines>?) {
-                        //TODO check if response success - response.isSuccessful
-                        if (response!!.isSuccessful) {
-                            mAdapter = response.body()?.let {
-                                ListNewsAdapter(it)
-                            }!!
-                            recycler_view_news.adapter = mAdapter
-                            mAdapter.notifyDataSetChanged()
-                            progressBar.visibility = View.GONE
-                        } else {
-                            when (response.code()) {
-                                404 -> {
-                                    Log.e("error", "Page is not found!")
-                                }
-                                500 -> {
-                                    Log.e("error", "Server error!")
-                                }
-                            }
-                        }
-                    }
-                })
-
-    }
 
 }
 

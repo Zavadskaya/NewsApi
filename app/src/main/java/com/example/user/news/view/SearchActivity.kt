@@ -68,14 +68,15 @@ class SearchActivity : AppCompatActivity(), BottomSheet.OnInputListener{
         searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String): Boolean {
                 if (query.length > 2) {
-                    newsFragment.loadWebSiteSource(" ", query)
+
+                    newsFragment.loadWebSiteSource(" ", 1, 10, query)
                 }
                 return false
             }
 
 
             override fun onQueryTextChange(newText: String): Boolean {
-                newsFragment.loadWebSiteSource(" ", newText)
+                newsFragment.loadWebSiteSource(" ", 1,10," ")
 
                 return false
             }
@@ -95,7 +96,7 @@ class SearchActivity : AppCompatActivity(), BottomSheet.OnInputListener{
         bottomSheetFragment.show(supportFragmentManager, bottomSheetFragment.tag)
     }
     override fun sendInput(input: String,output:String) {
-        newsFragment.loadWebSiteSource(input, " ")
+        newsFragment.loadWebSiteSource(input, 1, 10," ")
     }
 
 }
