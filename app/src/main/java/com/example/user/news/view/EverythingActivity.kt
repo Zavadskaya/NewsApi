@@ -35,7 +35,7 @@ open class  EverythingActivity : AppCompatActivity() {
 
         progress = findViewById<ProgressBar>(com.example.user.news.R.id.progressBar)
         recycler_view_everything.setHasFixedSize(true)
-        mAdapter = ListNewsAdapter(articles = data)
+        //mAdapter = ListNewsAdapter(articles = data)
         recycler_view_everything.adapter = mAdapter
         layoutManager = LinearLayoutManager(baseContext)
         recycler_view_everything.layoutManager = layoutManager

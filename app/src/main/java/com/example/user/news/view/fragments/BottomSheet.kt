@@ -18,14 +18,15 @@ import java.util.*
 
 
 class BottomSheet : BottomSheetDialogFragment() {
-    lateinit var country:Spinner
-    lateinit var category:Spinner
+    lateinit var country: Spinner
+    lateinit var category: Spinner
 
 
-    interface OnInputListener{
-        fun sendInput(input:String,output:String)
+    interface OnInputListener {
+        fun sendInput(input: String, output: String)
     }
-    lateinit var mOutput:OnInputListener
+
+    lateinit var mOutput: OnInputListener
     private var fragmentView: View? = null
 
 
@@ -43,37 +44,31 @@ class BottomSheet : BottomSheetDialogFragment() {
             countries
         )
 
-        category = fragmentView!!.findViewById<Spinner>(R.id.dCategory)
+        category = fragmentView!!.findViewById(R.id.dCategory)
 
         adapter.setDropDownViewResource(android.R.layout.simple_dropdown_item_1line)
-        country = fragmentView!!.findViewById<Spinner>(R.id.dCountry)
+        country = fragmentView!!.findViewById(R.id.dCountry)
         country.adapter = adapter
         initView()
-
-
     }
 
     private fun initView() {
         loadView()
-
         dialogDoneBtn.setOnClickListener {
-
             val str: String = category.selectedItem.toString()
-            val str_e:String = country.selectedItem.toString()
-            mOutput.sendInput(str,str_e)
-            saveData(country.selectedItemPosition,category.selectedItemPosition)
-            Toast.makeText(context, "dgf + $str + $str_e", Toast.LENGTH_LONG).show()
+            val str_e: String = country.selectedItem.toString()
+            mOutput.sendInput(str, str_e)
+            saveData(country.selectedItemPosition, category.selectedItemPosition)
+            Toast.makeText(context, "Save + $str + $str_e", Toast.LENGTH_LONG).show()
             dialog.dismiss()
         }
-
-
-
     }
-    private fun saveData(position: Int,position_2:Int) {
+
+    private fun saveData(position: Int, position_2: Int) {
         val prefs: SharedPreferences = PreferenceManager.getDefaultSharedPreferences(context)
         val prefEditor = prefs.edit()
         prefEditor.putInt("saved", position)
-        prefEditor.putInt("save",position_2)
+        prefEditor.putInt("save", position_2)
         prefEditor.apply()
         Toast.makeText(context, "Data saved", Toast.LENGTH_LONG).show()
 
@@ -92,10 +87,8 @@ class BottomSheet : BottomSheetDialogFragment() {
         super.onAttach(context)
         try {
             mOutput = (context as OnInputListener?)!!
-        }
-        catch (e:ClassCastException)
-        {
-            Log.e("Error","onAttach:ClassCastException" + e.message)
+        } catch (e: ClassCastException) {
+            Log.e("Error", "onAttach:ClassCastException" + e.message)
         }
     }
 }

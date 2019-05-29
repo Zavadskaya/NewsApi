@@ -1,6 +1,7 @@
 package com.example.user.news.net
 
 import android.util.Log
+import com.example.user.news.model.Article
 import com.example.user.news.model.Headlines
 import com.example.user.news.model.Sources
 import com.example.user.news.net.GlobalUrl.getApiKey
@@ -36,7 +37,7 @@ interface NewsService {
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int,
         @Query("q") keyword: String
-    ): Call<Headlines>
+    ): Call<Article>
 
     @GET("v2/everything")
     fun everything(

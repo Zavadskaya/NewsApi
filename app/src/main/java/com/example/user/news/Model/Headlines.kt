@@ -12,7 +12,9 @@ import io.realm.annotations.PrimaryKey
 open class Headlines() :RealmObject() {
     @PrimaryKey
     @SerializedName("id")
-    lateinit var id:String
+    var id:String = "1"
+    @SerializedName("status")
+    lateinit var status:String
     @SerializedName("articles")
     lateinit var articles: RealmList<Article>
     constructor(articles: RealmList<Article>) : this() {

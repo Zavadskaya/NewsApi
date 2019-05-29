@@ -22,7 +22,7 @@ android {
         }
     }
     realm {
-        kotlinExtensionsEnabled = false // Disable extensions if needed
+        syncEnabled = false // Disable extensions if needed
     }
 
     compileOptions {

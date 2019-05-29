@@ -28,8 +28,6 @@ class SearchActivity : AppCompatActivity(), BottomSheet.OnInputListener{
         val viewPager = findViewById<ViewPager>(R.id.viewpager)
         setupViewPager(viewPager)
 
-        val tabLayout = findViewById<TabLayout>(R.id.tabs)
-        tabLayout.setupWithViewPager(viewPager)
 
         val toolbar: Toolbar = findViewById<Toolbar>(R.id.toolbars)
         setSupportActionBar(toolbar)

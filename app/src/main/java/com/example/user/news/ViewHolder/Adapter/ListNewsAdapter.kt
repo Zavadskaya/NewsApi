@@ -16,17 +16,15 @@ import com.example.user.news.viewHolder.holder.ListNewsViewHolder
 import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
 import io.paperdb.Paper.init
+import io.realm.Realm
+import io.realm.RealmList
 import java.util.Collections.addAll
 
 
-class ListNewsAdapter (private val articles: Headlines) :
+class ListNewsAdapter (private val articles: RealmList<Article>) :
     RecyclerView.Adapter<ListNewsViewHolder>() {
 
-    var sourceSearchList: List<Article> = ArrayList()
-
-    init {
-        sourceSearchList = articles.articles
-    }
+    var sourceSearchList: List<Article> = articles
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListNewsViewHolder {
@@ -37,12 +35,12 @@ class ListNewsAdapter (private val articles: Headlines) :
 
     override fun onBindViewHolder(holder: ListNewsViewHolder, position: Int) {
         holder.article_title.text = sourceSearchList[position].title.toString()
-        var image = sourceSearchList[position].urlToImage.toString()
-        if (image!= " ")
+        val image = sourceSearchList[position].urlToImage.toString()
+        if (image != null) {
             Picasso.get()
                 .load(sourceSearchList[position].urlToImage)
-                .networkPolicy(NetworkPolicy.OFFLINE)
                 .into(holder.imageView)
+        }
         else {
             holder.imageView.setImageResource(com.example.user.news.R.drawable.news)
         }

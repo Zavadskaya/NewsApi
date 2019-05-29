@@ -12,6 +12,7 @@ import com.example.user.news.R.*
 import com.example.user.news.view.fragments.FragmentDialog
 import com.example.user.news.view.fragments.NewsFragment
 import com.example.user.news.viewHolder.adapter.FragmentAdapter
+import kotlinx.android.synthetic.main.activity_main.*
 
 
 class MainActivity : AppCompatActivity(), FragmentDialog.OnInputListener {
@@ -50,6 +51,10 @@ class MainActivity : AppCompatActivity(), FragmentDialog.OnInputListener {
             }
             true
         }
+        /*container.setOnClickListener{
+            bottomNavigationView.menu.getItem(0).isChecked = true
+
+        }*/
     }
 
     private fun setupViewPager(viewPager: ViewPager) {
