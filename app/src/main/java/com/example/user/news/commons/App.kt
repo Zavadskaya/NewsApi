@@ -1,4 +1,4 @@
-package com.example.user.news.common
+package com.example.user.news.commons
 import android.app.Application
 import io.realm.Realm
 import io.realm.RealmConfiguration
