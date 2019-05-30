@@ -1,13 +1,11 @@
 package com.example.user.news.view.fragments
 
 
-
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
 import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
-import android.util.Range
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,14 +16,11 @@ import com.example.user.news.model.Article
 import com.example.user.news.model.Headlines
 import com.example.user.news.net.NewsService
 import com.example.user.news.viewHolder.adapter.ListNewsAdapter
+import io.realm.Realm
 import kotlinx.android.synthetic.main.activity_news.*
 import retrofit2.Call
 import retrofit2.Response
-
-import io.realm.Realm
-import io.realm.RealmList
 import kotlin.random.Random
-
 
 
 open class NewsFragment : Fragment() {
@@ -34,15 +29,14 @@ open class NewsFragment : Fragment() {
     lateinit var mAdapter: ListNewsAdapter
     private lateinit var mHandler: Handler
     var mRunnable: Runnable? = null
-    // var data: Headlines = Headlines(articles = RealmList())
-    var data = RealmList<Article>()
-    var text: String = ""
+
+    var data = ArrayList<Article>()
+    private var category: String = ""
+    private var country: String = ""
     var n: Int = 0
     var isLoading = false
     var pagesize = 10
     var page = 1
-
-
 
 
     var progress: ProgressBar? = null
@@ -71,24 +65,17 @@ open class NewsFragment : Fragment() {
     }
 
 
-
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
-
-
-        val realmdb = Realm.getDefaultInstance()
-        realmdb.beginTransaction()
-        //realmdb.deleteAll()
-        realmdb.commitTransaction()
         // Initialize the handler instance
         mHandler = Handler()
 
         arguments?.let {
-            text = it.getString(ARG_TEXT, text)
+            category = it.getString(ARG_TEXT, category)
             n = it.getInt("pos")
         }
 
-        val contents = text
+        country = SharedPrefer.loadData(context!!)
 
         progress = view!!.findViewById(com.example.user.news.R.id.progressBar)
         recycler_view_news.setHasFixedSize(true)
@@ -98,14 +85,12 @@ open class NewsFragment : Fragment() {
         recycler_view_news.layoutManager = layoutManager
 
 
-        loadWebSiteSource(contents,page,pagesize," ")
-        //loadWebSiteSource(contents, page, pagesize, " ")
+        loadWebSiteSource(category, page, pagesize, " ")
 
         recycler_view_news.addOnScrollListener(object : EndlessRecyclerOnScrollListener(layoutManager) {
             override fun loadMoreItems() {
                 if (!isLoading) {
-                    loadWebSiteSource(contents, ++page, pagesize, " ")
-                    mAdapter.notifyDataSetChanged()
+                    loadWebSiteSource(category, ++page, pagesize, " ")
                 }
             }
         })
@@ -113,7 +98,7 @@ open class NewsFragment : Fragment() {
 
         refresh.setOnRefreshListener {
             mRunnable = Runnable {
-                loadWebSiteSource(contents,page,pagesize," ")
+                loadWebSiteSource(category, page, pagesize, " ")
                 refresh.isRefreshing = false
             }
         }
@@ -126,18 +111,16 @@ open class NewsFragment : Fragment() {
     }
 
 
-
     fun randomInRange(min: Int, max: Int): Int {
         val r = Random
         return r.nextInt((max - min) + 1) + min
     }
 
 
-
     fun loadWebSiteSource(category: String, page: Int, pagesize: Int, keyword: String) {
         progressBar.visibility = View.VISIBLE
         NewsService.instance.articles(
-            country = SharedPrefer.loadData(context!!),
+            country = country,
             pageSize = pagesize,
             page = page,
             category = category,
@@ -145,33 +128,23 @@ open class NewsFragment : Fragment() {
         )
             .enqueue(object : retrofit2.Callback<Headlines> {
                 override fun onFailure(call: Call<Headlines>?, t: Throwable?) {
-                    //Toast.makeText(context, "No wi-fi", Toast.LENGTH_SHORT)
-                        //.show()
-                    loadFromRealm()
                     progressBar.visibility = View.GONE
+                    Toast.makeText(context, "No wi-fi", Toast.LENGTH_SHORT).show()
+                    loadFromRealm()
                 }
 
                 override fun onResponse(call: Call<Headlines>?, response: Response<Headlines>?) {
-                    //TODO check if response success - response.isSuccessful
+                    progressBar.visibility = View.GONE
                     if (response!!.isSuccessful) {
-                        data.clear()
                         val list = response.body()!!.let { it }
+
+                        if (page == 1)
+                            data.clear()
+
                         data.addAll(list.articles)
-
-                        val realm = Realm.getDefaultInstance()
-
-                        realm.beginTransaction()
-                            for(article in data) {
-                                article.id = article.url.hashCode().toString()
-                                realm.copyToRealm(article.articles)
-                                Toast.makeText(context,"Save to realm",Toast.LENGTH_LONG).show()
-                            }
-                        realm.commitTransaction()
-                        realm.close()
-
                         mAdapter.notifyDataSetChanged()
-                        progressBar.visibility = View.GONE
 
+                        saveToRealm(data)
                     } else {
                         when (response.code()) {
                             404 -> {
@@ -182,33 +155,48 @@ open class NewsFragment : Fragment() {
                             }
                         }
                     }
-
-
                 }
             })
-
     }
 
-    fun loadFromRealm() {
-       val  realmd = Realm.getDefaultInstance()
-        if(realmd.isEmpty) {
+    private fun loadFromRealm() {
+        val realm = Realm.getDefaultInstance()
+
+        val articles = realm
+            .where(Article::class.java)
+            .equalTo("category", category)
+            .equalTo("country", country)
+            .findAll()
+
+        Log.d("REALM", "Articles size = ${articles.size}")
+
+        data.clear()
+
+
+        if (articles.size == 0) {
             Toast.makeText(context, "Realm is empty", Toast.LENGTH_LONG).show()
+        } else {
+            data.addAll(articles)
         }
-        else {
-            val values = realmd.where(Headlines::class.java).findAll()
-            realmd.beginTransaction()
-            for(i in 0 until values.size) {
-                for (articleList in values) {
-                    realmd.copyFromRealm(articleList.articles)
-                    data.addAll(articleList.articles)
-                    mAdapter.notifyDataSetChanged()
-                }
-            }
-            realmd.commitTransaction()
-            realmd.close()
-        }
+
+        mAdapter.notifyDataSetChanged()
     }
 
+    private fun saveToRealm(data: ArrayList<Article>) {
+        val realm = Realm.getDefaultInstance()
+        realm.use { realm ->
+            realm.beginTransaction()
+            for (article in data) {
+                article.id = article.url.hashCode().toString()
+                article.category = category
+                article.country = country
+            }
+            realm.insertOrUpdate(data)
+            realm.commitTransaction()
 
+            Log.d("REALM", "Saved to realm")
+            Toast.makeText(context, "Saved to realm", Toast.LENGTH_LONG).show()
+        }
+    }
 }
 

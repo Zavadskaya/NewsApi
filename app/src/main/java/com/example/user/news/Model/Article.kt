@@ -2,13 +2,12 @@ package com.example.user.news.model
 
 import com.google.gson.annotations.Expose
 import com.google.gson.annotations.SerializedName
-import io.realm.RealmList
-import io.realm.RealmModel
 import io.realm.RealmObject
 import io.realm.annotations.PrimaryKey
-import io.realm.annotations.RealmClass
 
 open class Article :RealmObject{
+    constructor()
+
     @PrimaryKey
     @SerializedName("id")
     lateinit var id:String
@@ -28,11 +27,8 @@ open class Article :RealmObject{
     @Expose
     @SerializedName("publishedAt")
     var publishedAt: String?=null
-    @SerializedName("articles")
-    var articles: RealmList<Article> = RealmList<Article>()
-    constructor(articles: RealmList<Article>) : this() {
-        this.articles = articles
-    }
-    constructor()
 
+
+    var category: String? = null
+    var country: String? = null
 }

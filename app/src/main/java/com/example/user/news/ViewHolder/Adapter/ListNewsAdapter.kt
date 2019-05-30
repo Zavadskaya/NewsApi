@@ -1,6 +1,5 @@
 package com.example.user.news.viewHolder.adapter
 
-import android.content.Context
 import android.content.Intent
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
@@ -8,20 +7,13 @@ import android.view.View
 import android.view.ViewGroup
 import com.example.user.news.`interface`.ItemClickListener
 import com.example.user.news.model.Article
-import com.example.user.news.model.Headlines
-import com.example.user.news.model.Sources
 import com.example.user.news.net.GlobalUrl
 import com.example.user.news.view.ArticleActivity
 import com.example.user.news.viewHolder.holder.ListNewsViewHolder
-import com.squareup.picasso.NetworkPolicy
 import com.squareup.picasso.Picasso
-import io.paperdb.Paper.init
-import io.realm.Realm
-import io.realm.RealmList
-import java.util.Collections.addAll
 
 
-class ListNewsAdapter (private val articles: RealmList<Article>) :
+class ListNewsAdapter(articles: ArrayList<Article>) :
     RecyclerView.Adapter<ListNewsViewHolder>() {
 
     var sourceSearchList: List<Article> = articles

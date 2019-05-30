@@ -10,12 +10,10 @@ import android.widget.ProgressBar
 import android.widget.Toast
 import com.example.user.news.R
 import com.example.user.news.model.Article
-
 import com.example.user.news.model.Headlines
 import com.example.user.news.net.NewsService
 import com.example.user.news.view.fragments.EndlessRecyclerOnScrollListener
 import com.example.user.news.viewHolder.adapter.ListNewsAdapter
-import io.realm.RealmList
 import kotlinx.android.synthetic.main.activity_everything.*
 import retrofit2.Call
 import retrofit2.Response
@@ -27,7 +25,7 @@ open class  EverythingActivity : AppCompatActivity() {
     lateinit var source: String
 
     //var data: Headlines = Headlines(articles = RealmList())
-    var data = RealmList<Article>()
+    var data = ArrayList<Article>()
     lateinit var progress:ProgressBar
     var isLoading = false
     var pagesize = 10
