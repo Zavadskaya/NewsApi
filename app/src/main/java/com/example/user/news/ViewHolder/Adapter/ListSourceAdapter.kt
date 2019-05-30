@@ -2,12 +2,14 @@ package com.example.user.news.viewHolder.adapter
 
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
 import android.widget.Filterable
+import android.widget.TextView
 import android.widget.Toast
 import com.example.user.news.`interface`.ItemClickListener
 import com.example.user.news.model.Sources
@@ -17,11 +19,13 @@ import com.example.user.news.viewHolder.holder.ListSourceViewHolder
 
 class ListSourceAdapter(private val context: Context, private val sour: Sources):RecyclerView.Adapter<ListSourceViewHolder>(),Filterable
 {
+
     private var sourceSearchList: Sources
 
     init {
         this.sourceSearchList = sour
     }
+
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ListSourceViewHolder {
         val inflater = LayoutInflater.from(parent.context)
         val itemView = inflater.inflate(com.example.user.news.R.layout.source_news_layout,parent,false)

@@ -1,11 +1,7 @@
 package com.example.user.news.view.fragments
 
 
-import android.app.ProgressDialog.show
-import android.content.Context
-import android.net.ConnectivityManager
-import android.net.Network
-import android.net.NetworkInfo
+
 import android.os.Bundle
 import android.os.Handler
 import android.support.v4.app.Fragment
@@ -147,22 +143,23 @@ open class NewsFragment : Fragment() {
             category = category,
             keyword = keyword
         )
-            .enqueue(object : retrofit2.Callback<Article> {
-                override fun onFailure(call: Call<Article>?, t: Throwable?) {
+            .enqueue(object : retrofit2.Callback<Headlines> {
+                override fun onFailure(call: Call<Headlines>?, t: Throwable?) {
                     //Toast.makeText(context, "No wi-fi", Toast.LENGTH_SHORT)
                         //.show()
                     loadFromRealm()
                     progressBar.visibility = View.GONE
                 }
 
-                override fun onResponse(call: Call<Article>?, response: Response<Article>?) {
+                override fun onResponse(call: Call<Headlines>?, response: Response<Headlines>?) {
                     //TODO check if response success - response.isSuccessful
                     if (response!!.isSuccessful) {
-                        //data.clear()
+                        data.clear()
                         val list = response.body()!!.let { it }
                         data.addAll(list.articles)
 
                         val realm = Realm.getDefaultInstance()
+
                         realm.beginTransaction()
                             for(article in data) {
                                 article.id = article.url.hashCode().toString()
@@ -198,12 +195,12 @@ open class NewsFragment : Fragment() {
             Toast.makeText(context, "Realm is empty", Toast.LENGTH_LONG).show()
         }
         else {
-            val values = realmd.where(Article::class.java).findAll()
+            val values = realmd.where(Headlines::class.java).findAll()
             realmd.beginTransaction()
             for(i in 0 until values.size) {
-                for (article in values[i]!!.articles) {
-                    realmd.copyFromRealm(article)
-                    data.addAll(values)
+                for (articleList in values) {
+                    realmd.copyFromRealm(articleList.articles)
+                    data.addAll(articleList.articles)
                     mAdapter.notifyDataSetChanged()
                 }
             }

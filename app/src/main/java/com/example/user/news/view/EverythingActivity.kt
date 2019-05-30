@@ -3,10 +3,13 @@ package com.example.user.news.view
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.Toolbar
 import android.util.Log
 import android.view.View
 import android.widget.ProgressBar
 import android.widget.Toast
+import com.example.user.news.R
+import com.example.user.news.model.Article
 
 import com.example.user.news.model.Headlines
 import com.example.user.news.net.NewsService
@@ -23,7 +26,8 @@ open class  EverythingActivity : AppCompatActivity() {
     lateinit var mAdapter: ListNewsAdapter
     lateinit var source: String
 
-    var data: Headlines = Headlines(articles = RealmList())
+    //var data: Headlines = Headlines(articles = RealmList())
+    var data = RealmList<Article>()
     lateinit var progress:ProgressBar
     var isLoading = false
     var pagesize = 10
@@ -33,9 +37,15 @@ open class  EverythingActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(com.example.user.news.R.layout.activity_everything)
 
+        val toolbar: Toolbar = findViewById<Toolbar>(R.id.toolb)
+        setSupportActionBar(toolbar)
+        supportActionBar!!.setDisplayHomeAsUpEnabled(true)
+        supportActionBar!!.setDisplayShowTitleEnabled(false)
+
+
         progress = findViewById<ProgressBar>(com.example.user.news.R.id.progressBar)
         recycler_view_everything.setHasFixedSize(true)
-        //mAdapter = ListNewsAdapter(articles = data)
+        mAdapter = ListNewsAdapter(articles = data)
         recycler_view_everything.adapter = mAdapter
         layoutManager = LinearLayoutManager(baseContext)
         recycler_view_everything.layoutManager = layoutManager
@@ -54,6 +64,10 @@ open class  EverythingActivity : AppCompatActivity() {
             loadWebSiteSource(source,page,pagesize)
         }
     }
+    override fun onSupportNavigateUp(): Boolean {
+        onBackPressed()
+        return true
+    }
 
     private fun loadWebSiteSource(source: String,page:Int,pageSize:Int) {
         NewsService.instance.everything(sources = source,page =page ,pageSize = pageSize)
@@ -66,7 +80,7 @@ open class  EverythingActivity : AppCompatActivity() {
                 override fun onResponse(call: Call<Headlines>?, response: Response<Headlines>?) {
                     if (response!!.isSuccessful) {
                         val list = response.body()!!.let { it }
-                        data.articles.addAll(list.articles)
+                        data.addAll(list.articles)
                         mAdapter.notifyDataSetChanged()
                         progress.visibility = View.GONE
                     } else {

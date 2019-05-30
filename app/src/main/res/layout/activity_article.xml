@@ -1,16 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        xmlns:android="http://schemas.android.com/apk/res/android">
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
              xmlns:tools="http://schemas.android.com/tools"
              xmlns:app="http://schemas.android.com/apk/res-auto"
              android:layout_width="match_parent"
              android:layout_height="wrap_content">
 
+    <android.support.v7.widget.Toolbar
+            android:id="@+id/tool"
+            android:layout_width="match_parent"
+            android:accessibilityPaneTitle="@string/news"
+            android:layout_height="45dp"/>
     <android.support.v7.widget.CardView
             android:layout_width="wrap_content"
             android:layout_height="605dp"
             android:layout_marginLeft="11dp"
             android:layout_marginRight="11dp"
             android:layout_marginTop="7dp"
+            android:layout_below="@+id/tool"
             android:layout_marginBottom="7dp"
             app:cardElevation="@dimen/cardview_default_elevation"
             app:cardCornerRadius="10dp">
@@ -23,7 +34,7 @@
 
             <ImageView
                     android:id="@+id/img"
-                    android:layout_width="345dp"
+                    android:layout_width="match_parent"
                     android:layout_height="247dp"
                     android:scaleType="centerCrop"
                     android:transitionName="img"
@@ -83,7 +94,7 @@
 
                 <TextView
                         android:id="@+id/publishedAt"
-                        android:layout_width="wrap_content"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginLeft="60dp"
                         android:layout_marginRight="60dp"
@@ -109,7 +120,7 @@
 
             <TextView
                     android:id="@+id/desc"
-                    android:layout_width="314dp"
+                    android:layout_width="match_parent"
                     android:layout_height="171dp"
                     android:layout_below="@id/title"
                     android:layout_marginLeft="16dp"
@@ -128,8 +139,9 @@
 
 
         </RelativeLayout>
-
     </android.support.v7.widget.CardView>
 
-</FrameLayout>
+</RelativeLayout>
+
+</ScrollView>
 

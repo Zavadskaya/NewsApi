@@ -31,7 +31,6 @@ import retrofit2.Response
         recycler_view_source_news.setHasFixedSize(true)
         layoutManager = LinearLayoutManager(baseContext)
         recycler_view_source_news.layoutManager = layoutManager
-
         bottomNavigationView = this.findViewById(R.id.navigation)
         bottomNavigationView.selectedItemId = R.id.menu_item1
         bottomNavigationView.setOnNavigationItemSelectedListener { item ->

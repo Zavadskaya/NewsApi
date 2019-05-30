@@ -37,7 +37,7 @@ interface NewsService {
         @Query("page") page: Int,
         @Query("pageSize") pageSize: Int,
         @Query("q") keyword: String
-    ): Call<Article>
+    ): Call<Headlines>
 
     @GET("v2/everything")
     fun everything(
